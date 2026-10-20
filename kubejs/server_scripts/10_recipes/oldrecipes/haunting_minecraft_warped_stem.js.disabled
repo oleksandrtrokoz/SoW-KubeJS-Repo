@@ -1,0 +1,8 @@
+ServerEvents.recipes(event => {
+  event.remove({ output: 'minecraft:warped_stem' })
+
+  event.recipes.createHaunting(
+    'minecraft:warped_stem',
+    'minecraft:crimson_stem'
+  )
+})

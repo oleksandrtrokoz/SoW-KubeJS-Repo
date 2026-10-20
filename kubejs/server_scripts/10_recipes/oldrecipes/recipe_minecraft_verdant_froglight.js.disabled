@@ -1,0 +1,8 @@
+ServerEvents.recipes(event => {
+  event.remove({ output: 'minecraft:verdant_froglight' })
+
+  event.shapeless('1x minecraft:verdant_froglight', [
+    'minecraft:glowstone',
+    'minecraft:green_dye'
+  ])
+})

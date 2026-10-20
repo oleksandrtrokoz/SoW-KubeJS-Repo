@@ -1,0 +1,12 @@
+ServerEvents.recipes(event => {
+  event.remove({ output: 'tfmg:concrete' })
+
+  event.recipes.createMixing(
+    [Item.of('tfmg:concrete', 4)],
+    [
+      Item.of('minecraft:sand', 4),
+      Item.of('minecraft:gravel', 4),
+      Fluid.of('minecraft:water', 20)
+    ]
+  )
+})

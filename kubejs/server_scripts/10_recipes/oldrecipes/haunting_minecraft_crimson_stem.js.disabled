@@ -1,0 +1,8 @@
+ServerEvents.recipes(event => {
+  event.remove({ output: 'minecraft:crimson_stem' })
+
+  event.recipes.createHaunting(
+    'minecraft:crimson_stem',
+    '#minecraft:logs_that_burn'
+  )
+})

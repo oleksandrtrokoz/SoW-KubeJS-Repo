@@ -1,0 +1,11 @@
+ServerEvents.recipes(event => {
+  event.remove({ output: 'tfmg:rebar_concrete' })
+
+  event.shapeless(
+    Item.of('tfmg:rebar_concrete', 1),
+    [
+      Item.of('tfmg:rebar', 8),
+      'tfmg:concrete'
+    ]
+  )
+})

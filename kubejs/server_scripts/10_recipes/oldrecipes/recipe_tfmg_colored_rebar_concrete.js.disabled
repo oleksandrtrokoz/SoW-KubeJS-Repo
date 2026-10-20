@@ -1,0 +1,32 @@
+ServerEvents.recipes(event => {
+  const colors = [
+    'white',
+    'blue',
+    'light_blue',
+    'red',
+    'green',
+    'lime',
+    'pink',
+    'magenta',
+    'yellow',
+    'gray',
+    'light_gray',
+    'brown',
+    'cyan',
+    'purple',
+    'orange',
+    'black'
+  ]
+
+  colors.forEach(color => {
+    event.remove({ output: `tfmg:${color}_rebar_concrete` })
+
+    event.shapeless(
+      Item.of(`tfmg:${color}_rebar_concrete`, 1),
+      [
+        Item.of('tfmg:rebar', 8),
+        `tfmg:${color}_concrete`
+      ]
+    )
+  })
+})

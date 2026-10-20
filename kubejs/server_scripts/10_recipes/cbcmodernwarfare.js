@@ -1,0 +1,811 @@
+ServerEvents.recipes(event => {
+  const logs = "#minecraft:logs";
+  const boredComponent = "crusty_chunks:bored_component";
+  const mechanicalComponent = "#crusty_chunks:mechanicalcomponent";
+  const steelComponent = "crusty_chunks:steel_component";
+  const steelPlate = "crusty_chunks:steelplate";
+  const cogwheel = "create:cogwheel";
+  const precisionMechanism = "create:precision_mechanism";
+  const quickfiringMechanism = "createbigcannons:quickfiring_mechanism";
+  const recoilSpring = "createbigcannons:recoil_spring";
+  const steelSlidingBreechblock = "createbigcannons:steel_sliding_breechblock";
+  const steelScrewLock = "createbigcannons:steel_screw_lock";
+  const steelSheet = "#createbigcannons:sheet_steel";
+  const gunpowder = "#createbigcannons:gunpowder";
+  const ironIngot = "#createbigcannons:ingot_iron";
+  const steelIngot = "#createbigcannons:ingot_steel";
+  const copperIngot = "#createbigcannons:ingot_copper";
+  const explosiveMaterial = "#createbigcannons:high_explosive_materials";
+  const carbonSteelBlock = "cbcmodernwarfare:carbon_steel_block";
+  const emptyMediumCartridge = "cbcmodernwarfare:empty_mediumcannon_cartridge";
+  const filledMediumCartridge = "cbcmodernwarfare:filled_mediumcannon_cartridge";
+  const idRoot = "kubejs:cbcmodernwarfare/";
+  const cuttingIdRoot = idRoot + "cutting/";
+  const sequencedIdRoot = idRoot + "sequenced_assembly/";
+  const craftingIdRoot = idRoot + "crafting/";
+
+  const castMoulds = [
+    "mediumcannon_breech_cast_mould",
+    "mediumcannon_recoil_barrel_cast_mould",
+    "mediumcannon_barrel_cast_mould",
+    "rotarycannon_breech_cast_mould",
+    "rotarycannon_bearing_cast_mould",
+    "rotarycannon_barrel_cast_mould"
+  ];
+
+  const mediumMaterials = {
+    bronze: {
+      block: "#createbigcannons:block_bronze",
+      ingot: "#createbigcannons:ingot_bronze",
+      fallingBreech: "cbcmodernwarfare:bronze_mediumcannon_falling_breech",
+      barrelBase: "createbigcannons:unbored_bronze_autocannon_barrel",
+      breechBase: "createbigcannons:unbored_bronze_sliding_breech",
+      recoilBase: "createbigcannons:unbored_bronze_autocannon_recoil_spring"
+    },
+    cast_iron: {
+      block: "#createbigcannons:block_cast_iron",
+      ingot: "#createbigcannons:ingot_cast_iron",
+      fallingBreech: "cbcmodernwarfare:cast_iron_mediumcannon_falling_breech",
+      barrelBase: "createbigcannons:unbored_cast_iron_autocannon_barrel",
+      breechBase: "createbigcannons:unbored_cast_iron_sliding_breech",
+      recoilBase: "createbigcannons:unbored_cast_iron_autocannon_recoil_spring"
+    },
+    steel: {
+      block: "#createbigcannons:block_steel",
+      ingot: "#createbigcannons:ingot_steel",
+      fallingBreech: "cbcmodernwarfare:steel_mediumcannon_falling_breech",
+      barrelBase: "createbigcannons:unbored_steel_autocannon_barrel",
+      breechBase: "createbigcannons:unbored_steel_sliding_breech",
+      recoilBase: "createbigcannons:unbored_steel_autocannon_recoil_spring"
+    },
+    nethersteel: {
+      block: "#createbigcannons:block_nethersteel",
+      ingot: "#createbigcannons:ingot_nethersteel",
+      fallingBreech: "cbcmodernwarfare:nethersteel_mediumcannon_falling_breech"
+    }
+  };
+
+  const rotaryMaterials = {
+    bronze: {
+      block: "#createbigcannons:block_bronze",
+      extractor: "cbcmodernwarfare:bronze_rotarycannon_breech_extractor",
+      barrelBase: "createbigcannons:unbored_bronze_autocannon_barrel",
+      breechBase: "createbigcannons:unbored_bronze_autocannon_breech",
+      bearingBase: "createbigcannons:unbored_bronze_autocannon_recoil_spring"
+    },
+    steel: {
+      block: "#createbigcannons:block_steel",
+      extractor: "cbcmodernwarfare:steel_rotaryannon_breech_extractor",
+      barrelBase: "createbigcannons:unbored_steel_autocannon_barrel",
+      breechBase: "createbigcannons:unbored_steel_autocannon_breech",
+      bearingBase: "createbigcannons:unbored_steel_autocannon_recoil_spring"
+    },
+    nethersteel: {
+      block: "#createbigcannons:block_nethersteel",
+      extractor: "cbcmodernwarfare:nethersteel_rotarycannon_breech_extractor"
+    }
+  };
+
+  const mediumRoundRecipes = [
+    {
+      output: "cbcmodernwarfare:ap_mediumcannon_round",
+      ingredients: ["createbigcannons:ap_shot"]
+    },
+    {
+      output: "cbcmodernwarfare:apds_mediumcannon_round",
+      ingredients: ["cbcmodernwarfare:apds_shot"]
+    },
+    {
+      output: "cbcmodernwarfare:apfsds_mediumcannon_round",
+      ingredients: ["cbcmodernwarfare:apds_shot", steelSheet]
+    },
+    {
+      output: "cbcmodernwarfare:aphe_mediumcannon_round",
+      ingredients: ["createbigcannons:ap_shell"]
+    },
+    {
+      output: "cbcmodernwarfare:he_mediumcannon_round",
+      ingredients: ["createbigcannons:he_shell"]
+    },
+    {
+      output: "cbcmodernwarfare:hef_mediumcannon_round",
+      ingredients: ["cbcmodernwarfare:hefrag_shell"]
+    },
+    {
+      output: "cbcmodernwarfare:heap_mediumcannon_round",
+      ingredients: ["cbcmodernwarfare:heap_shell"]
+    },
+    {
+      output: "cbcmodernwarfare:canister_mediumcannon_round",
+      ingredients: ["createbigcannons:bag_of_grapeshot"]
+    },
+    {
+      output: "cbcmodernwarfare:smoke_mediumcannon_round",
+      ingredients: ["createbigcannons:smoke_shell"]
+    }
+  ];
+
+  const mediumCartridgeRecipes = [
+    {
+      output: "cbcmodernwarfare:ap_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:ap_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:apds_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:apds_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:apfsds_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:apfsds_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:aphe_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:aphe_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:he_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:he_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:hef_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:hef_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:heap_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:heap_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:canister_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:canister_mediumcannon_round"
+    },
+    {
+      output: "cbcmodernwarfare:smoke_mediumcannon_cartridge",
+      round: "cbcmodernwarfare:smoke_mediumcannon_round"
+    }
+  ];
+
+  function ingredientEntry(id) {
+    return id.charAt(0) === "#"
+      ? { tag: id.substring(1) }
+      : { item: id };
+  }
+
+  function deploy(transitional, ingredient) {
+    return event.recipes.create.deploying(transitional, [
+      transitional,
+      ingredient
+    ]);
+  }
+
+  function press(transitional) {
+    return event.recipes.create.pressing(transitional, transitional);
+  }
+
+  function cut(transitional) {
+    return event.recipes.create.cutting(transitional, transitional);
+  }
+
+  function itemName(id) {
+    return id.split(":")[1];
+  }
+
+  function addSequencedAssembly(result, input, additions, finishers, loops, path) {
+    const steps = additions.map(ingredient => deploy(result, ingredient));
+
+    finishers.forEach(finisher => {
+      steps.push(finisher === "cut" ? cut(result) : press(result));
+    });
+
+    event.recipes.create.sequenced_assembly(
+      result,
+      input,
+      steps
+    ).transitionalItem(result)
+      .loops(loops)
+      .id(sequencedIdRoot + path);
+  }
+
+  const castingAlternatives = [];
+  const boringAlternatives = [];
+  const buildingAlternatives = [];
+  const builtUpAlternatives = [];
+
+  ["bronze", "cast_iron", "steel"].forEach(material => {
+    const metal = mediumMaterials[material];
+
+    castingAlternatives.push(
+      {
+        output: "cbcmodernwarfare:unbored_" + material + "_mediumcannon_barrel",
+        input: metal.barrelBase,
+        additions: [metal.block, steelPlate],
+        finishers: ["press"],
+        loops: 1
+      },
+      {
+        output: "cbcmodernwarfare:unbored_" + material + "_mediumcannon_breech",
+        input: metal.breechBase,
+        additions: [metal.block, steelComponent],
+        finishers: ["cut", "press"],
+        loops: 1
+      },
+      {
+        output: "cbcmodernwarfare:unbored_" + material + "_mediumcannon_recoil_barrel",
+        input: metal.recoilBase,
+        additions: ["cbcmodernwarfare:heavy_recoil_spring", metal.block],
+        finishers: ["press"],
+        loops: 1
+      }
+    );
+
+    boringAlternatives.push(
+      {
+        output: "cbcmodernwarfare:" + material + "_mediumcannon_barrel",
+        input: "cbcmodernwarfare:unbored_" + material + "_mediumcannon_barrel"
+      },
+      {
+        output: "cbcmodernwarfare:incomplete_" + material + "_mediumcannon_breech",
+        input: "cbcmodernwarfare:unbored_" + material + "_mediumcannon_breech"
+      },
+      {
+        output: "cbcmodernwarfare:incomplete_" + material + "_mediumcannon_recoil_barrel",
+        input: "cbcmodernwarfare:unbored_" + material + "_mediumcannon_recoil_barrel"
+      }
+    );
+
+    buildingAlternatives.push(
+      {
+        output: "cbcmodernwarfare:" + material + "_mediumcannon_breech",
+        input: "cbcmodernwarfare:incomplete_" + material + "_mediumcannon_breech",
+        ingredient: metal.fallingBreech
+      },
+      {
+        output: "cbcmodernwarfare:" + material + "_mediumcannon_recoil_barrel",
+        input: "cbcmodernwarfare:incomplete_" + material + "_mediumcannon_recoil_barrel",
+        ingredient: "cbcmodernwarfare:heavy_recoil_spring"
+      }
+    );
+  });
+
+  castingAlternatives.push(
+    {
+      output: "cbcmodernwarfare:unbored_nethersteel_mediumcannon_barrel",
+      input: "cbcmodernwarfare:unbored_steel_mediumcannon_barrel",
+      additions: [mediumMaterials.nethersteel.block],
+      finishers: ["press"],
+      loops: 1
+    },
+    {
+      output: "cbcmodernwarfare:unbored_nethersteel_mediumcannon_breech",
+      input: "cbcmodernwarfare:unbored_steel_mediumcannon_breech",
+      additions: [mediumMaterials.nethersteel.block, steelComponent],
+      finishers: ["cut", "press"],
+      loops: 1
+    },
+    {
+      output: "cbcmodernwarfare:unbored_nethersteel_mediumcannon_recoil_barrel",
+      input: "cbcmodernwarfare:unbored_steel_mediumcannon_recoil_barrel",
+      additions: ["cbcmodernwarfare:heavy_recoil_spring", mediumMaterials.nethersteel.block],
+      finishers: ["press"],
+      loops: 1
+    }
+  );
+
+  boringAlternatives.push(
+    {
+      output: "cbcmodernwarfare:nethersteel_mediumcannon_barrel",
+      input: "cbcmodernwarfare:unbored_nethersteel_mediumcannon_barrel"
+    },
+    {
+      output: "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_breech",
+      input: "cbcmodernwarfare:unbored_nethersteel_mediumcannon_breech"
+    },
+    {
+      output: "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_recoil_barrel",
+      input: "cbcmodernwarfare:unbored_nethersteel_mediumcannon_recoil_barrel"
+    }
+  );
+
+  buildingAlternatives.push(
+    {
+      output: "cbcmodernwarfare:nethersteel_mediumcannon_breech",
+      input: "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_breech",
+      ingredient: mediumMaterials.nethersteel.fallingBreech
+    },
+    {
+      output: "cbcmodernwarfare:nethersteel_mediumcannon_recoil_barrel",
+      input: "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_recoil_barrel",
+      ingredient: "cbcmodernwarfare:heavy_recoil_spring"
+    }
+  );
+
+  ["bronze", "steel"].forEach(material => {
+    const metal = rotaryMaterials[material];
+
+    castingAlternatives.push(
+      {
+        output: "cbcmodernwarfare:unbored_" + material + "_rotarycannon_barrel",
+        input: metal.barrelBase,
+        additions: [metal.barrelBase, metal.barrelBase, metal.barrelBase],
+        finishers: ["cut", "press"],
+        loops: 1
+      },
+      {
+        output: "cbcmodernwarfare:unbored_" + material + "_rotarycannon_breech",
+        input: metal.breechBase,
+        additions: [metal.breechBase, metal.breechBase, metal.breechBase, steelComponent],
+        finishers: ["press"],
+        loops: 1
+      },
+      {
+        output: "cbcmodernwarfare:unbored_" + material + "_rotarycannon_bearing",
+        input: metal.bearingBase,
+        additions: [metal.bearingBase, metal.bearingBase, metal.bearingBase, precisionMechanism],
+        finishers: ["cut", "press"],
+        loops: 1
+      }
+    );
+
+    boringAlternatives.push(
+      {
+        output: "cbcmodernwarfare:" + material + "_rotarycannon_barrel",
+        input: "cbcmodernwarfare:unbored_" + material + "_rotarycannon_barrel"
+      },
+      {
+        output: "cbcmodernwarfare:incomplete_" + material + "_rotarycannon_breech",
+        input: "cbcmodernwarfare:unbored_" + material + "_rotarycannon_breech"
+      },
+      {
+        output: "cbcmodernwarfare:incomplete_" + material + "_rotarycannon_bearing",
+        input: "cbcmodernwarfare:unbored_" + material + "_rotarycannon_bearing"
+      }
+    );
+
+    buildingAlternatives.push(
+      {
+        output: "cbcmodernwarfare:" + material + "_rotarycannon_breech",
+        input: "cbcmodernwarfare:incomplete_" + material + "_rotarycannon_breech",
+        ingredient: metal.extractor
+      },
+      {
+        output: "cbcmodernwarfare:" + material + "_rotarycannon_bearing",
+        input: "cbcmodernwarfare:incomplete_" + material + "_rotarycannon_bearing",
+        ingredient: precisionMechanism
+      }
+    );
+  });
+
+  castingAlternatives.push(
+    {
+      output: "cbcmodernwarfare:unbored_nethersteel_rotarycannon_barrel",
+      input: "cbcmodernwarfare:unbored_steel_rotarycannon_barrel",
+      additions: [rotaryMaterials.nethersteel.block],
+      finishers: ["cut", "press"],
+      loops: 1
+    },
+    {
+      output: "cbcmodernwarfare:unbored_nethersteel_rotarycannon_breech",
+      input: "cbcmodernwarfare:unbored_steel_rotarycannon_breech",
+      additions: [rotaryMaterials.nethersteel.block, steelComponent],
+      finishers: ["press"],
+      loops: 1
+    },
+    {
+      output: "cbcmodernwarfare:unbored_nethersteel_rotarycannon_bearing",
+      input: "cbcmodernwarfare:unbored_steel_rotarycannon_bearing",
+      additions: [rotaryMaterials.nethersteel.block, precisionMechanism],
+      finishers: ["cut", "press"],
+      loops: 1
+    },
+    {
+      output: "cbcmodernwarfare:unbored_gun_launcher_barrel",
+      input: "createbigcannons:steel_cannon_barrel",
+      additions: [carbonSteelBlock],
+      finishers: ["cut", "press"],
+      loops: 1
+    },
+    {
+      output: "cbcmodernwarfare:unbored_gun_launcher_sliding_breech",
+      input: "createbigcannons:steel_sliding_breech",
+      additions: [carbonSteelBlock, steelComponent],
+      finishers: ["cut", "press"],
+      loops: 1
+    }
+  );
+
+  boringAlternatives.push(
+    {
+      output: "cbcmodernwarfare:nethersteel_rotarycannon_barrel",
+      input: "cbcmodernwarfare:unbored_nethersteel_rotarycannon_barrel"
+    },
+    {
+      output: "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_breech",
+      input: "cbcmodernwarfare:unbored_nethersteel_rotarycannon_breech"
+    },
+    {
+      output: "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_bearing",
+      input: "cbcmodernwarfare:unbored_nethersteel_rotarycannon_bearing"
+    },
+    {
+      output: "cbcmodernwarfare:gun_launcher_barrel",
+      input: "cbcmodernwarfare:unbored_gun_launcher_barrel"
+    },
+    {
+      output: "cbcmodernwarfare:built_up_gun_launcher_barrel",
+      input: "cbcmodernwarfare:unbored_built_up_gun_launcher_barrel"
+    },
+    {
+      output: "cbcmodernwarfare:gun_launcher_chamber",
+      input: "cbcmodernwarfare:unbored_gun_launcher_chamber"
+    },
+    {
+      output: "cbcmodernwarfare:incomplete_gun_launcher_sliding_breech",
+      input: "cbcmodernwarfare:unbored_gun_launcher_sliding_breech"
+    }
+  );
+
+  buildingAlternatives.push(
+    {
+      output: "cbcmodernwarfare:nethersteel_rotarycannon_breech",
+      input: "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_breech",
+      ingredient: rotaryMaterials.nethersteel.extractor
+    },
+    {
+      output: "cbcmodernwarfare:nethersteel_rotarycannon_bearing",
+      input: "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_bearing",
+      ingredient: precisionMechanism
+    },
+    {
+      output: "cbcmodernwarfare:gun_launcher_sliding_breech",
+      input: "cbcmodernwarfare:incomplete_gun_launcher_sliding_breech",
+      ingredient: steelSlidingBreechblock
+    }
+  );
+
+  builtUpAlternatives.push(
+    {
+      output: "cbcmodernwarfare:unbored_built_up_gun_launcher_barrel",
+      input: "cbcmodernwarfare:unbored_gun_launcher_barrel",
+      additions: [carbonSteelBlock]
+    },
+    {
+      output: "cbcmodernwarfare:unbored_gun_launcher_chamber",
+      input: "cbcmodernwarfare:unbored_built_up_gun_launcher_barrel",
+      additions: [carbonSteelBlock, steelPlate]
+    }
+  );
+
+  const partRecipeOutputs = [
+    "cbcmodernwarfare:compact_mount"
+  ].concat(
+    castingAlternatives.map(recipe => recipe.output),
+    boringAlternatives.map(recipe => recipe.output),
+    buildingAlternatives.map(recipe => recipe.output),
+    builtUpAlternatives.map(recipe => recipe.output)
+  );
+
+  partRecipeOutputs.forEach(output => {
+    event.remove({ output: output });
+  });
+
+  castMoulds.forEach(name => {
+    event.recipes.create
+      .cutting("cbcmodernwarfare:" + name, logs)
+      .id(cuttingIdRoot + name);
+  });
+
+  Object.keys(mediumMaterials).forEach(material => {
+    const metal = mediumMaterials[material];
+
+    event.shaped(metal.fallingBreech, [
+      " I ",
+      "CIC",
+      " I "
+    ], {
+      C: cogwheel,
+      I: metal.ingot
+    }).id(craftingIdRoot + itemName(metal.fallingBreech));
+  });
+
+  event.recipes.create.sequenced_assembly(
+    "cbcmodernwarfare:heavy_recoil_spring",
+    recoilSpring,
+    [
+      event.recipes.create.deploying("cbcmodernwarfare:heavy_recoil_spring", [
+        "cbcmodernwarfare:heavy_recoil_spring",
+        steelComponent
+      ]),
+      event.recipes.create.pressing(
+        "cbcmodernwarfare:heavy_recoil_spring",
+        "cbcmodernwarfare:heavy_recoil_spring"
+      )
+    ]
+  ).transitionalItem("cbcmodernwarfare:heavy_recoil_spring")
+    .loops(1)
+    .id(sequencedIdRoot + "heavy_recoil_spring");
+
+  [
+    {
+      output: "cbcmodernwarfare:bronze_rotarycannon_breech_extractor",
+      input: mediumMaterials.bronze.ingot
+    },
+    {
+      output: "cbcmodernwarfare:steel_rotaryannon_breech_extractor",
+      input: mediumMaterials.steel.ingot
+    },
+    {
+      output: "cbcmodernwarfare:nethersteel_rotarycannon_breech_extractor",
+      input: mediumMaterials.nethersteel.ingot
+    }
+  ].forEach(recipe => {
+    addSequencedAssembly(
+      recipe.output,
+      recipe.input,
+      [],
+      ["cut"],
+      3,
+      "components/" + itemName(recipe.output)
+    );
+  });
+
+  event.recipes.create
+    .cutting(Item.of("cbcmodernwarfare:mediumcannon_cartridge_sheet", 4), steelSheet)
+    .id(cuttingIdRoot + "mediumcannon_cartridge_sheet");
+
+  event.recipes.create.sequenced_assembly(
+    emptyMediumCartridge,
+    "cbcmodernwarfare:mediumcannon_cartridge_sheet",
+    [
+      event.recipes.create.pressing(emptyMediumCartridge, emptyMediumCartridge)
+    ]
+  ).transitionalItem(emptyMediumCartridge)
+    .loops(8)
+    .id(sequencedIdRoot + "empty_mediumcannon_cartridge");
+
+  event.recipes.create.sequenced_assembly(
+    filledMediumCartridge,
+    emptyMediumCartridge,
+    [
+      event.recipes.create.deploying(filledMediumCartridge, [
+        filledMediumCartridge,
+        gunpowder
+      ]),
+      event.recipes.create.deploying(filledMediumCartridge, [
+        filledMediumCartridge,
+        gunpowder
+      ])
+    ]
+  ).transitionalItem(filledMediumCartridge)
+    .loops(1)
+    .id(sequencedIdRoot + "filled_mediumcannon_cartridge");
+
+  castingAlternatives.forEach(recipe => {
+    addSequencedAssembly(
+      recipe.output,
+      recipe.input,
+      recipe.additions,
+      recipe.finishers,
+      recipe.loops,
+      "parts/casting/" + itemName(recipe.output)
+    );
+  });
+
+  boringAlternatives.forEach(recipe => {
+    addSequencedAssembly(
+      recipe.output,
+      recipe.input,
+      [boredComponent],
+      ["cut", "press"],
+      1,
+      "parts/boring/" + itemName(recipe.output)
+    );
+  });
+
+  buildingAlternatives.forEach(recipe => {
+    addSequencedAssembly(
+      recipe.output,
+      recipe.input,
+      [recipe.ingredient],
+      ["press"],
+      1,
+      "parts/building/" + itemName(recipe.output)
+    );
+  });
+
+  builtUpAlternatives.forEach(recipe => {
+    addSequencedAssembly(
+      recipe.output,
+      recipe.input,
+      recipe.additions,
+      ["press"],
+      1,
+      "parts/built_up/" + itemName(recipe.output)
+    );
+  });
+
+  event.shaped("cbcmodernwarfare:carbon_steel_ingot", [
+    "NNN",
+    "NNN",
+    "NNN"
+  ], {
+    N: "cbcmodernwarfare:carbon_steel_nugget"
+  }).id(craftingIdRoot + "carbon_steel_ingot_from_nuggets");
+
+  event.shapeless(Item.of("cbcmodernwarfare:carbon_steel_nugget", 9), [
+    "cbcmodernwarfare:carbon_steel_ingot"
+  ]).id(craftingIdRoot + "carbon_steel_nugget");
+
+  event.shaped("cbcmodernwarfare:carbon_steel_block", [
+    "III",
+    "III",
+    "III"
+  ], {
+    I: "cbcmodernwarfare:carbon_steel_ingot"
+  }).id(craftingIdRoot + "carbon_steel_block");
+
+  event.shapeless(Item.of("cbcmodernwarfare:carbon_steel_ingot", 9), [
+    "cbcmodernwarfare:carbon_steel_block"
+  ]).id(craftingIdRoot + "carbon_steel_ingot_from_block");
+
+  event.shaped("cbcmodernwarfare:silicon_ingot", [
+    "NNN",
+    "NNN",
+    "NNN"
+  ], {
+    N: "cbcmodernwarfare:silicon_nugget"
+  }).id(craftingIdRoot + "silicon_ingot_from_nuggets");
+
+  event.shapeless(Item.of("cbcmodernwarfare:silicon_nugget", 9), [
+    "cbcmodernwarfare:silicon_ingot"
+  ]).id(craftingIdRoot + "silicon_nugget");
+
+  event.shaped(Item.of("cbcmodernwarfare:carbon_steel_stairs", 4), [
+    "B  ",
+    "BB ",
+    "BBB"
+  ], {
+    B: "cbcmodernwarfare:carbon_steel_block"
+  }).id(craftingIdRoot + "carbon_steel_stairs");
+
+  event.shaped(Item.of("cbcmodernwarfare:carbon_steel_slab", 6), [
+    "BBB"
+  ], {
+    B: "cbcmodernwarfare:carbon_steel_block"
+  }).id(craftingIdRoot + "carbon_steel_slab");
+
+  event.shapeless("cbcmodernwarfare:compact_mount", [
+    "createbigcannons:cannon_mount",
+    mechanicalComponent
+  ]).id(craftingIdRoot + "compact_mount");
+
+  event.shapeless("cbcmodernwarfare:gun_launcher_quickfiring_breech", [
+    "cbcmodernwarfare:gun_launcher_sliding_breech",
+    quickfiringMechanism
+  ]).id(craftingIdRoot + "gun_launcher_quickfiring_breech");
+
+  event.shapeless("cbcmodernwarfare:torpedo_tube", [
+    "cbcmodernwarfare:gun_launcher_chamber",
+    steelScrewLock
+  ]).id(craftingIdRoot + "torpedo_tube");
+
+  event.shapeless(Item.of("cbcmodernwarfare:incendiary_tip", 2), [
+    "minecraft:blaze_powder",
+    ironIngot
+  ]).id(craftingIdRoot + "incendiary_tip");
+
+  event.shapeless(Item.of("cbcmodernwarfare:inert_explosives", 2), [
+    "minecraft:gunpowder",
+    "minecraft:sand"
+  ]).id(craftingIdRoot + "inert_explosives");
+
+  event.recipes.create
+    .cutting("cbcmodernwarfare:rocket_rails", "cbcmodernwarfare:gun_launcher_barrel")
+    .id(cuttingIdRoot + "rocket_rails");
+
+  event.recipes.create
+    .cutting("cbcmodernwarfare:rocket_rails_end", "cbcmodernwarfare:gun_launcher_chamber")
+    .id(cuttingIdRoot + "rocket_rails_end");
+
+  event.shapeless("cbcmodernwarfare:hefrag_shell", [
+    "createbigcannons:he_shell",
+    "createbigcannons:shot_balls"
+  ]).id(craftingIdRoot + "hefrag_shell");
+
+  event.shapeless("cbcmodernwarfare:heap_shell", [
+    "createbigcannons:ap_shell",
+    copperIngot
+  ]).id(craftingIdRoot + "heap_shell");
+
+  event.custom({
+    type: "minecraft:crafting_shapeless",
+    category: "misc",
+    ingredients: [
+      ingredientEntry("createbigcannons:ap_shot"),
+      ingredientEntry(steelSheet)
+    ],
+    result: {
+      item: "cbcmodernwarfare:apds_shot"
+    }
+  }).id(craftingIdRoot + "apds_shot");
+
+  mediumRoundRecipes.forEach(recipe => {
+    event.custom({
+      type: "minecraft:crafting_shapeless",
+      category: "misc",
+      ingredients: recipe.ingredients.map(ingredientEntry),
+      result: {
+        item: recipe.output
+      }
+    }).id(craftingIdRoot + itemName(recipe.output));
+  });
+
+  mediumCartridgeRecipes.forEach(recipe => {
+    event.custom({
+      type: "minecraft:crafting_shapeless",
+      category: "misc",
+      ingredients: [
+        ingredientEntry(filledMediumCartridge),
+        ingredientEntry(recipe.round)
+      ],
+      result: {
+        item: recipe.output
+      }
+    }).id(craftingIdRoot + itemName(recipe.output));
+  });
+
+  event.shaped(Item.of("cbcmodernwarfare:hvap_autocannon_round", 4), [
+    "S",
+    "I"
+  ], {
+    S: steelIngot,
+    I: ironIngot
+  }).id(craftingIdRoot + "hvap_autocannon_round");
+
+  event.shaped(Item.of("cbcmodernwarfare:canister_autocannon_round", 2), [
+    "S",
+    "G",
+    "C"
+  ], {
+    S: "createbigcannons:shot_balls",
+    G: gunpowder,
+    C: steelSheet
+  }).id(craftingIdRoot + "canister_autocannon_round");
+
+  event.shaped(Item.of("cbcmodernwarfare:he_autocannon_round", 2), [
+    "X",
+    "G",
+    "C"
+  ], {
+    X: explosiveMaterial,
+    G: gunpowder,
+    C: steelSheet
+  }).id(craftingIdRoot + "he_autocannon_round");
+
+  event.shapeless("cbcmodernwarfare:he_autocannon_round", [
+    "create:iron_sheet",
+    "createbigcannons:flak_autocannon_round",
+    gunpowder
+  ]).id(craftingIdRoot + "he_autocannon_round_from_flak");
+
+  event.shaped(Item.of("cbcmodernwarfare:smoke_discharger_round", 2), [
+    "H",
+    "G",
+    "C"
+  ], {
+    H: "minecraft:hay_block",
+    G: gunpowder,
+    C: steelSheet
+  }).id(craftingIdRoot + "smoke_discharger_round");
+});
+
+ServerEvents.recipes(event => {
+
+  ;(() => {
+
+      event.replaceInput(
+        { id: 'kubejs:cbcmodernwarfare/crafting/he_autocannon_round_from_flak' },
+        'create:iron_sheet',
+        '#forge:plates/steel'
+      )
+  })()
+
+})
