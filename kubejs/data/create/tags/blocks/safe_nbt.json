@@ -1,0 +1,21 @@
+{
+  "replace": true,
+  "values": [
+    "create:mechanical_piston",
+    "create:sticky_mechanical_piston",
+    "create:windmill_bearing",
+    "create:mechanical_bearing",
+    "create:clockwork_bearing",
+    "create:rope_pulley",
+    "create:linear_chassis",
+    "create:secondary_linear_chassis",
+    "create:radial_chassis",
+    "create:sequenced_gearshift",
+    "create:rotation_speed_controller",
+    "create:redstone_link",
+    "create:analog_lever",
+    "create:pulse_repeater",
+    "create:pulse_extender",
+    "create:pulse_timer"
+  ]
+}
