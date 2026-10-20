@@ -1,0 +1,13 @@
+StartupEvents.registry('item', event => {
+  event.create('short_iron_barrel').displayName('Short Iron Barrel')
+  event.create('medium_iron_barrel').displayName('Medium Iron Barrel')
+  event.create('long_iron_barrel').displayName('Long Iron Barrel')
+  event.create('incomplete_medium_iron_barrel').displayName('Incomplete Medium Iron Barrel')
+  event.create('incomplete_long_iron_barrel').displayName('Incomplete Long Iron Barrel')
+  event.create('short_steel_barrel').displayName('Short Steel Barrel')
+  event.create('medium_steel_barrel').displayName('Medium Steel Barrel')
+  event.create('long_steel_barrel').displayName('Long Steel Barrel')
+  event.create('incomplete_short_steel_barrel').displayName('Incomplete Short Steel Barrel')
+  event.create('incomplete_medium_steel_barrel').displayName('Incomplete Medium Steel Barrel')
+  event.create('incomplete_long_steel_barrel').displayName('Incomplete Long Steel Barrel')
+})
